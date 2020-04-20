@@ -6,12 +6,13 @@ import 'package:intl/intl.dart';
 class TransactionList extends StatelessWidget {
   final List<Transaction> _transactions;
   final Currency _currency;
+  final Function _deleteTransaction;
 
-  TransactionList(this._transactions, this._currency);
+  TransactionList(this._transactions, this._currency, this._deleteTransaction);
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 400,
       child: _transactions.isEmpty
           ? Column(
               children: <Widget>[
@@ -47,14 +48,25 @@ class TransactionList extends StatelessWidget {
                         padding: EdgeInsets.all(6),
                         child: FittedBox(
                           child: Text(
-                              '${_currency.left()} ${_transactions[index].amount} ${_currency.right()}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                              '${_currency.left()}${_transactions[index].amount}${_currency.right()}',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
                         ),
                       ),
                     ),
                     title: Text(_transactions[index].title,
                         style: Theme.of(context).textTheme.title),
                     subtitle: Text(
-                        DateFormat.yMMMd().format(_transactions[index].date)),
+                      DateFormat.yMMMd().format(_transactions[index].date),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _deleteTransaction(_transactions[index].id);
+                      },
+                      color: Theme.of(context).errorColor,
+                    ),
                   ),
                 );
               },
