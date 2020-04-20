@@ -13,75 +13,52 @@ class TransactionList extends StatelessWidget {
     return Container(
       height: 300,
       child: _transactions.isEmpty
-        ? Column(
-        children: <Widget>[
-          Text('No transactions added yet!',
-              style: Theme.of(context).textTheme.title),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            child: Image.asset(
-              'assets/images/waiting.png',
-              fit: BoxFit.cover,
-            ),
-            height: 200,
-          ),
-        ],
-      )
-    : ListView.builder(
-        itemCount: _transactions.length,
-        itemBuilder: (ctx, index) {
-          return Card(
-            child: Row(
+          ? Column(
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 15,
-                  ),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                    width: 2,
-                  )),
-                  child: Text(
-                    '${_currency.left()}${_transactions[index].amount.toStringAsFixed(2)}${_currency.right()}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                Text('No transactions added yet!',
+                    style: Theme.of(context).textTheme.title),
+                SizedBox(
+                  height: 20,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      _transactions[index].title,
-                      // style: TextStyle(
-                      //   fontWeight: FontWeight.bold,
-                      //   fontSize: 16,
-                      // ),
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    Text(
-                      DateFormat.yMMMd()
-                          .format(_transactions[index].date),
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ), 
-                    ),
-                  ],
-                )
+                Container(
+                  child: Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
+                  ),
+                  height: 200,
+                ),
               ],
+            )
+          : ListView.builder(
+              itemCount: _transactions.length,
+              itemBuilder: (ctx, index) {
+                return Card(
+                  elevation: 5,
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                  child: ListTile(
+                    leading: Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(6),
+                        child: FittedBox(
+                          child: Text(
+                              '${_currency.left()} ${_transactions[index].amount} ${_currency.right()}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ),
+                    title: Text(_transactions[index].title,
+                        style: Theme.of(context).textTheme.title),
+                    subtitle: Text(
+                        DateFormat.yMMMd().format(_transactions[index].date)),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }
